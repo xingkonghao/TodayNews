@@ -17,6 +17,7 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
     var newTopics:[NewsItem] = [NewsItem]()
     override func viewDidLoad(){
         super.viewDidLoad()
+        self.automaticallyAdjustsScrollViewInsets = false
         view.backgroundColor = UIColor.white
         self.setupUI()
         self.requestData()
@@ -25,7 +26,7 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
         view.addSubview(tabView)
     }
     private lazy var tabView:UITableView = {
-        let tab = UITableView(frame: self.view.bounds, style: .plain)
+        let tab = UITableView(frame: CGRect(x:0,y:0,width:SCREENW,height:SCREENH-NavBarHeight-TabBarHeight), style: .plain)
         tab.delegate = self
         tab.dataSource = self
         tab.register(HomeSmallCell.self, forCellReuseIdentifier: topicSmallCellID)

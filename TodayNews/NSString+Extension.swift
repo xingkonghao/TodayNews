@@ -41,18 +41,31 @@ extension NSString {
     
       
             let comp2 = calendar.dateComponents(components, from: publishTime as Date)
-            
+            let timeStr :String?
             if comp.year == comp2.year {
                 if comp.day == comp2.day {
-                    return "\(comp.hour! - comp2.hour!)小时前"
+                    timeStr = "\(comp.hour! - comp2.hour!)小时前"
+                    print(timeStr)
+
+                    return timeStr!
                 } else {
-                    return "\(comp2.month)-\(comp2.day) \(comp2.hour):\(comp2.minute)"
+                    timeStr = "\(comp2.month!)-\(comp2.day!) \(comp2.hour!):\(comp2.minute!)"
+                    print(timeStr)
+
+                    return timeStr!
                 }
             } else {
-                return "\(comp2.year)-\(comp2.month)-\(comp2.day) \(comp2.hour):\(comp2.minute)"
+                timeStr = "\(comp2.year!)-\(comp2.month!)-\(comp2.day!) \(comp2.hour!):\(comp2.minute!)"
+                print(timeStr)
+                return timeStr!
             }
-            return ""
         }
     }
+//    class func stringNilCheck(text:String) -> String{
+//        if text.isKind(of: String)  {
+//            return ""
+//        }
+//        return text as! String
+//    }
 }
 

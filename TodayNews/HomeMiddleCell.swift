@@ -12,8 +12,11 @@ class HomeMiddleCell: HomeTopicCell {
     
     var newsTopic: NewsItem? {
         didSet{
-            titleLabel.text = String(newsTopic!.title!)
-            timeLabel.text = NSString.changeDateTime(publish_time: newsTopic!.publish_time!)
+            titleLabel.text = newsTopic?.title as? String
+            print(newsTopic?.publish_time)
+            if newsTopic!.publish_time != nil {
+                timeLabel.text = NSString.changeDateTime(publish_time: newsTopic!.publish_time!)
+            }
             if let sourceAvatar = newsTopic?.source_avatar {
                 nameLabel.text = newsTopic!.source
                 avatarImageView.setCircleHeader(url: sourceAvatar)
@@ -42,8 +45,10 @@ class HomeMiddleCell: HomeTopicCell {
                 })
             }
             filterWords = newsTopic?.filter_words
-            let url = newsTopic!.middle_image?.url
-            rightImageView.kf.setImage(with:URL(string: url!)!)
+            let url = newsTopic?.middle_image?.url
+            if url != nil {
+                rightImageView.kf.setImage(with:URL(string: url!))
+            }
             
             if let label = newsTopic?.label {
                 stickLabel.setTitle(" \(label) ", for: .normal)
@@ -59,21 +64,21 @@ class HomeMiddleCell: HomeTopicCell {
         
         addSubview(timeButton)
         
-//        timeButton.snp.makeConstraints { (make) in
-//            make.right.equalTo(rightImageView.snp.right).offset(-5)
-//            make.bottom.equalTo(rightImageView.snp.bottom).offset(-5)
-//        }
-//        
-//        rightImageView.snp.makeConstraints { (make) in
-//            make.top.equalTo(self).offset(kHomeMargin)
-//            make.size.equalTo(CGSize(width:108,height: 70))
-//            make.right.equalTo(self).offset(-kHomeMargin)
-//        }
-//        
-//        titleLabel.snp.remakeConstraints { (make) in
-//            make.right.equalTo(rightImageView.snp.left).offset(-kHomeMargin)
-//            make.left.top.equalTo(self).offset(kHomeMargin)
-//        }
+        timeButton.snp.makeConstraints { (make) in
+            make.right.equalTo(rightImageView.snp.right).offset(-5)
+            make.bottom.equalTo(rightImageView.snp.bottom).offset(-5)
+        }
+        
+        rightImageView.snp.makeConstraints { (make) in
+            make.top.equalTo(self).offset(kHomeMargin)
+            make.size.equalTo(CGSize(width:108,height: 70))
+            make.right.equalTo(self).offset(-kHomeMargin)
+        }
+        
+        titleLabel.snp.remakeConstraints { (make) in
+            make.right.equalTo(rightImageView.snp.left).offset(-kHomeMargin)
+            make.left.top.equalTo(self).offset(kHomeMargin)
+        }
     }
     
     /// 右下角的视频时长

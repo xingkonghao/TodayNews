@@ -20,7 +20,7 @@ class HomeTopicCell: UITableViewCell {
     var closeButtonClosure: ((_ filterWords: [YMFilterWord])->())?
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {

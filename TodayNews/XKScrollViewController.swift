@@ -15,7 +15,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     public var titleH:CGFloat = 40
     private var pageHeight:CGFloat = 0.0
     var startIndex:NSInteger = 0//起始的页面
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.automaticallyAdjustsScrollViewInsets = false
@@ -29,17 +29,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
 //        view.addSubview(titleScroll)
         view.addSubview(pageCollection)
         view.backgroundColor = UIColor.white
-//        titleScroll.snp.makeConstraints { (make) in
-//            make.left.right.equalTo(0)
-//            make.height.equalTo(titleH)
-//            make.top.equalTo(NavBarHeight)
-//        }
-        
-//        pageCollection.snp.makeConstraints { (make) in
-//            make.left.right.equalTo(0)
-//            make.bottom.equalTo(-TabBarHeight)
-//            make.top.
-//        }
+
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -97,6 +87,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
         let cell:XKPageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PageCell", for: indexPath) as! XKPageCell
         cell.setupUI(text: "\(indexPath.item)")
         cell.backgroundColor = UIColor.red
+      
         return cell
     }
     //点击
@@ -108,7 +99,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     }
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        if self.titles.count>indexPath.item {
+        if self.titles.count>indexPath.item  {
             let childVC = childViewControllers[indexPath.item]
             let r = arc4random()%255,g = arc4random()%255,b=arc4random()%255
             childVC.view.backgroundColor = XKColor(r: CGFloat(r), g: CGFloat(g), b: CGFloat(b),a: 1)
@@ -120,14 +111,19 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if scrollView == self.pageCollection {
-            var page = self.pageCollection.contentOffset.x/SCREENW
+            var page:Int = Int(self.pageCollection.contentOffset.x/SCREENW)
             if page<0 {
                 page = 0
             }
-            self.titleScroll.adjustTitleOffSetToCurrentIndex(index: Int(page+100))
+            page = page < 0 ? 0 : page
+            page = page > childViewControllers.count-1 ? childViewControllers.count-1 : page
+            self.titleScroll.adjustTitleOffSetToCurrentIndex(index: page+100)
         }
     }
-    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == pageCollection {
+        }
+    }
     func requestTitles(){
         let homeBackend:HomeBackend = HomeBackend()
         homeBackend.loadHomeTitlesData { [weak self] (topTitles) in

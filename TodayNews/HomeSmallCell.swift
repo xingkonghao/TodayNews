@@ -12,7 +12,7 @@ class HomeSmallCell: HomeTopicCell {
     
     var newsTopic: NewsItem? {
         didSet{
-            titleLabel.text = String(newsTopic!.title!)
+            titleLabel.text = newsTopic?.title as String?
             timeLabel.text = NSString.changeDateTime(publish_time: newsTopic!.publish_time!)
             if let sourceAvatar = newsTopic?.source_avatar {
                 nameLabel.text = newsTopic!.source
@@ -65,12 +65,12 @@ class HomeSmallCell: HomeTopicCell {
         
         addSubview(middleView)
         print(self.subviews.count)
-//        middleView.snp.makeConstraints { (make) in
-//            make.bottom.equalTo(self.avatarImageView.snp.top).offset(-kMargin)
-//            make.top.equalTo(self.titleLabel.snp.bottom).offset(kMargin)
-//            make.left.equalTo(self.titleLabel.snp.left)
-//            make.right.equalTo(self.titleLabel.snp.right)
-//        }
+        middleView.snp.makeConstraints { (make) in
+            make.bottom.equalTo(self.avatarImageView.snp.top).offset(-kMargin)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(kMargin)
+            make.left.equalTo(self.titleLabel.snp.left)
+            make.right.equalTo(self.titleLabel.snp.right)
+        }
     }
     
     /// 中间 3 张图的容器

@@ -151,7 +151,7 @@ class NewsItem: NSObject {
         
         let largeImageLists = dict["large_image_list"] as? [AnyObject]
         let imageLists = dict["image_list"] as? [AnyObject]
-        
+        print(title)
         if imageLists == nil || imageLists?.count == 0 {
             // 再判断 middle_image 是否为空
             if middle_image?.height != nil {
@@ -163,7 +163,9 @@ class NewsItem: NSObject {
                     imageW = SCREENW - CGFloat(30)
                     imageH = 170
                     titleW = SCREENW - 30
-                    titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+                    if title != nil {
+                        titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+                    }
                     // 中间有一张大图（包括视频和广告的图片），cell 的高度 = 底部间距 + 标题的高度 + 中间间距 + 图片高度 + 中间间距 + 用户头像的高度 + 底部间距
                     cellHeight = 2 * kHomeMargin + titleH + imageH + 2 * kMargin + 16
                     if largeImageLists != nil && (largeImageLists?.count)! > 0 {
@@ -180,14 +182,19 @@ class NewsItem: NSObject {
                     imageH = 70
                     // 文字宽度 SCREENW - 108 - 30 - 20
                     titleW = SCREENW - 158
-                    titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+                    if title != nil {
+                    titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)                    }
+
                     // 比较标题和图片的高度哪个大，那么 cell 的高度就根据大的计算
                     // 右边有一张图片，cell 的高度 = 底部间距 + 标题的高度 + 中间的间距 + 用户头像的高度 + 底部间距
                     cellHeight = (titleH + 16 + kMargin >= imageH) ? (2 * kHomeMargin + titleH + kMargin + 16):(2 * kHomeMargin + imageH)
                 }
             } else { // 没有图片,也不是视频
                 titleW = SCREENW - 30
-                titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+                if title != nil {
+                    titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+                }
+              
                 // 没有图片，cell 的高度 = 底部间距 + 标题的高度 + 中间的间距 + 用户头像的高度 + 底部间距
                 cellHeight = 2 * kHomeMargin + titleH + kMargin + 16
             }
@@ -202,7 +209,9 @@ class NewsItem: NSObject {
             imageH = 70
             // 文字的宽度 SCREENW-30
             titleW = SCREENW - 30
-            titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+            if title != nil {
+                titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+            }
             cellHeight = 2 * kHomeMargin + titleH + imageH + 2 * kMargin + 16
         }
     }

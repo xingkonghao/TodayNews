@@ -16,9 +16,10 @@ class HomeNoImageCell: HomeTopicCell {
     }
     var newsTopic:NewsItem?{
         didSet{
-            titleLabel.text = String(describing: newsTopic!.title)
+            titleLabel.text = newsTopic!.title as? String
             if let publishTime = newsTopic?.publish_time {
-                titleLabel.text = NSString.changeDateTime(publish_time: publishTime)
+                
+                timeLabel.text = NSString.changeDateTime(publish_time: publishTime)
             }
             if let sourceAvatar = newsTopic?.source_avatar {
                 nameLabel.text = newsTopic?.source
