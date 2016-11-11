@@ -27,12 +27,15 @@
 		D159E21D1DCB2D8200C7AA84 /* HomeMiddleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D159E21C1DCB2D8200C7AA84 /* HomeMiddleCell.swift */; };
 		D159E21F1DCB2EF400C7AA84 /* HomeSmallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D159E21E1DCB2EF400C7AA84 /* HomeSmallCell.swift */; };
 		D16281AB1DC86BD9003D1D12 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16281AA1DC86BD9003D1D12 /* CollectionViewCell.swift */; };
+		D180B7271DD0525200F8104B /* TipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D180B7261DD0525200F8104B /* TipsView.swift */; };
 		D18CA5F61DC9C0090027B0AB /* HomeBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18CA5F51DC9C0090027B0AB /* HomeBackend.swift */; };
 		D18CA5F91DC9C1CE0027B0AB /* NetWorkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18CA5F81DC9C1CE0027B0AB /* NetWorkManager.swift */; };
+		D1A416051DD421B2004C2B0C /* NetWorkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A416041DD421B2004C2B0C /* NetWorkCache.swift */; };
 		D1A54BAF1DC0B336009FAB1B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A54BAE1DC0B336009FAB1B /* HomeViewController.swift */; };
 		D1A54BB11DC0B356009FAB1B /* VideoViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A54BB01DC0B356009FAB1B /* VideoViewContoller.swift */; };
 		D1A54BB31DC0B363009FAB1B /* NewCareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A54BB21DC0B363009FAB1B /* NewCareViewController.swift */; };
 		D1A54BB61DC0B37A009FAB1B /* MineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A54BB51DC0B37A009FAB1B /* MineViewController.swift */; };
+		D1AD77761DD56713005C5B72 /* NSString+md5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AD77751DD56713005C5B72 /* NSString+md5.swift */; };
 		D1CA5D731DC19B17007B08F9 /* HomeTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CA5D721DC19B17007B08F9 /* HomeTitleView.swift */; };
 		D1CA5D771DC1A0ED007B08F9 /* HomeTopTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CA5D761DC1A0ED007B08F9 /* HomeTopTitle.swift */; };
 		D1CA5DFD1DC1F9D8007B08F9 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1CA5DF81DC1F9D8007B08F9 /* UIView+Extension.swift */; };
@@ -66,12 +69,16 @@
 		D159E21C1DCB2D8200C7AA84 /* HomeMiddleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeMiddleCell.swift; sourceTree = "<group>"; };
 		D159E21E1DCB2EF400C7AA84 /* HomeSmallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeSmallCell.swift; sourceTree = "<group>"; };
 		D16281AA1DC86BD9003D1D12 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		D180B7261DD0525200F8104B /* TipsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsView.swift; sourceTree = "<group>"; };
 		D18CA5F51DC9C0090027B0AB /* HomeBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeBackend.swift; sourceTree = "<group>"; };
 		D18CA5F81DC9C1CE0027B0AB /* NetWorkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetWorkManager.swift; sourceTree = "<group>"; };
+		D1A416041DD421B2004C2B0C /* NetWorkCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetWorkCache.swift; sourceTree = "<group>"; };
 		D1A54BAE1DC0B336009FAB1B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D1A54BB01DC0B356009FAB1B /* VideoViewContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewContoller.swift; sourceTree = "<group>"; };
 		D1A54BB21DC0B363009FAB1B /* NewCareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewCareViewController.swift; sourceTree = "<group>"; };
 		D1A54BB51DC0B37A009FAB1B /* MineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineViewController.swift; sourceTree = "<group>"; };
+		D1AD776D1DD565F5005C5B72 /* TodayNews-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TodayNews-Bridging-Header.h"; sourceTree = "<group>"; };
+		D1AD77751DD56713005C5B72 /* NSString+md5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+md5.swift"; sourceTree = "<group>"; };
 		D1CA5D721DC19B17007B08F9 /* HomeTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTitleView.swift; sourceTree = "<group>"; };
 		D1CA5D761DC1A0ED007B08F9 /* HomeTopTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTopTitle.swift; sourceTree = "<group>"; };
 		D1CA5DF81DC1F9D8007B08F9 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -140,6 +147,7 @@
 				D14EAF3D1DC04EB30002A8B2 /* Assets.xcassets */,
 				D14EAF3F1DC04EB30002A8B2 /* LaunchScreen.storyboard */,
 				D14EAF421DC04EB30002A8B2 /* Info.plist */,
+				D1AD776D1DD565F5005C5B72 /* TodayNews-Bridging-Header.h */,
 			);
 			path = TodayNews;
 			sourceTree = "<group>";
@@ -159,6 +167,7 @@
 		D18CA5F71DC9C1B30027B0AB /* NetWork */ = {
 			isa = PBXGroup;
 			children = (
+				D1A416041DD421B2004C2B0C /* NetWorkCache.swift */,
 				D18CA5F81DC9C1CE0027B0AB /* NetWorkManager.swift */,
 			);
 			name = NetWork;
@@ -223,6 +232,7 @@
 				D159E21A1DCB2AAB00C7AA84 /* HomeLargeCell.swift */,
 				D159E2161DCB146200C7AA84 /* HomeNoImageCell.swift */,
 				D159E2181DCB14D800C7AA84 /* HomeTopicCell.swift */,
+				D180B7261DD0525200F8104B /* TipsView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -260,6 +270,7 @@
 				D1CA5DF91DC1F9D8007B08F9 /* UIImage+Extendion.swift */,
 				D1CA5DFA1DC1F9D8007B08F9 /* UIImageView+Extension.swift */,
 				D1CA5DFB1DC1F9D8007B08F9 /* NSString+Extension.swift */,
+				D1AD77751DD56713005C5B72 /* NSString+md5.swift */,
 				D1CA5DFC1DC1F9D8007B08F9 /* UITableView+Extension.swift */,
 			);
 			name = Category;
@@ -301,7 +312,7 @@
 					D14EAF321DC04EB30002A8B2 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = EYN7J4KXM9;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -390,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D180B7271DD0525200F8104B /* TipsView.swift in Sources */,
 				D1CA5DFF1DC1F9D8007B08F9 /* UIImageView+Extension.swift in Sources */,
 				D14EAF6A1DC04F890002A8B2 /* BaseViewController.swift in Sources */,
 				D11568DE1DC71C5B006FFC90 /* XKScrollViewController.swift in Sources */,
@@ -405,11 +417,13 @@
 				D159E21F1DCB2EF400C7AA84 /* HomeSmallCell.swift in Sources */,
 				D11568E01DC722A3006FFC90 /* XKPageCell.swift in Sources */,
 				D14EAFAE1DC0A7050002A8B2 /* XKConst.swift in Sources */,
+				D1A416051DD421B2004C2B0C /* NetWorkCache.swift in Sources */,
 				D1A54BAF1DC0B336009FAB1B /* HomeViewController.swift in Sources */,
 				D159E21D1DCB2D8200C7AA84 /* HomeMiddleCell.swift in Sources */,
 				D159E2151DCAED2D00C7AA84 /* NewsItem.swift in Sources */,
 				D1A54BB31DC0B363009FAB1B /* NewCareViewController.swift in Sources */,
 				D18CA5F91DC9C1CE0027B0AB /* NetWorkManager.swift in Sources */,
+				D1AD77761DD56713005C5B72 /* NSString+md5.swift in Sources */,
 				D1CA5D771DC1A0ED007B08F9 /* HomeTopTitle.swift in Sources */,
 				D18CA5F61DC9C0090027B0AB /* HomeBackend.swift in Sources */,
 				D14EAF371DC04EB30002A8B2 /* AppDelegate.swift in Sources */,
@@ -542,12 +556,15 @@
 			baseConfigurationReference = F1A065EB8527508BA9E8A35E /* Pods-TodayNews.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = EYN7J4KXM9;
 				INFOPLIST_FILE = TodayNews/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dongfangyingu.TodayNews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TodayNews/TodayNews-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -557,12 +574,14 @@
 			baseConfigurationReference = 8E7DAAA38BDDA403F9401059 /* Pods-TodayNews.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = EYN7J4KXM9;
 				INFOPLIST_FILE = TodayNews/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dongfangyingu.TodayNews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TodayNews/TodayNews-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

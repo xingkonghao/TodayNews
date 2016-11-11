@@ -125,16 +125,23 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
         }
     }
     func requestTitles(){
+        self.titles = NetWorkCache().unarchiveNetData(fileName: "topTitles.archive", obj: self.titles as AnyObject) as! [HomeTopTitle]
+        if titles.count != 0 {
+            self.addChildrenControllers(topTitles: (self.titles))
+            self.titleScroll.setupUI(titles: self.titles)
+            self.pageCollection.reloadData()
+            return
+        }
         let homeBackend:HomeBackend = HomeBackend()
         homeBackend.loadHomeTitlesData { [weak self] (topTitles) in
             let dict = ["category":"__all__","name":"推荐"]
             let recommend = HomeTopTitle(dict:dict as [String : AnyObject])
-            
             self!.titles.append(recommend)
             self!.titles += topTitles
             self?.addChildrenControllers(topTitles: (self?.titles)!)
             self?.titleScroll.setupUI(titles: self!.titles)
             self?.pageCollection.reloadData()
+            NetWorkCache().archiveNetData(filelName: "topTitles.archive", obj: topTitles)
         }
     }
     func addChildrenControllers(topTitles: [HomeTopTitle]){

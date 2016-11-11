@@ -16,7 +16,18 @@ class NetWorkManager: NSObject {
     
         Alamofire.request(url, method: .get, parameters: params).responseJSON { (response) in
             guard response.result.isSuccess else{
-                print(response.result.error)
+                print(response.result.error ?? "请求失败")
+                
+                return
+            }
+            finished(response)
+        }
+    }
+    func request_getWithNoParams(url: String,finished:@escaping (_ response:DataResponse<Any>)->()) {
+        
+        Alamofire.request(url, method: .get).responseJSON { (response) in
+            guard response.result.isSuccess else{
+                print(response.result.error ?? "请求失败")
                 return
             }
             finished(response)
@@ -28,4 +39,5 @@ class NetWorkManager: NSObject {
             finished(response)
         }
     }
+   
 }

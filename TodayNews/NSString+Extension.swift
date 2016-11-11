@@ -45,18 +45,15 @@ extension NSString {
             if comp.year == comp2.year {
                 if comp.day == comp2.day {
                     timeStr = "\(comp.hour! - comp2.hour!)小时前"
-                    print(timeStr)
 
                     return timeStr!
                 } else {
                     timeStr = "\(comp2.month!)-\(comp2.day!) \(comp2.hour!):\(comp2.minute!)"
-                    print(timeStr)
 
                     return timeStr!
                 }
             } else {
                 timeStr = "\(comp2.year!)-\(comp2.month!)-\(comp2.day!) \(comp2.hour!):\(comp2.minute!)"
-                print(timeStr)
                 return timeStr!
             }
         }

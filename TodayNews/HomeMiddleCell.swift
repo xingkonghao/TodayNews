@@ -14,8 +14,8 @@ class HomeMiddleCell: HomeTopicCell {
         didSet{
             titleLabel.text = newsTopic?.title as? String
             print(newsTopic?.publish_time)
-            if newsTopic!.publish_time != nil {
-                timeLabel.text = NSString.changeDateTime(publish_time: newsTopic!.publish_time!)
+            if let pubishiTime = newsTopic!.publish_time {
+                timeLabel.text = NSString.changeDateTime(publish_time: pubishiTime)
             }
             if let sourceAvatar = newsTopic?.source_avatar {
                 nameLabel.text = newsTopic!.source

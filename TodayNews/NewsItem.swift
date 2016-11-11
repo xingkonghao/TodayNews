@@ -9,6 +9,8 @@
 import UIKit
 
 class NewsItem: NSObject {
+ 
+
 
     
     // 文字的高度

@@ -7,23 +7,41 @@
 //
 
 import UIKit
+import MJRefresh
+
 let topicSmallCellID = "HomeSmallCell"
 let topicMiddleCellID = "HomeMiddleCell"
 let topicLargeCellID = "HomeLargeCell"
 let topicNoImageCellID = "HomeNoImageCell"
 class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDataSource{
 
+    private var pullRefreshTime: TimeInterval?
+
     var category:String?
     var newTopics:[NewsItem] = [NewsItem]()
+    private lazy var tipsView:TipsView = {
+        let tipsView:TipsView = TipsView(frame: CGRect(x: 0, y: 0, width: SCREENW, height: 40))
+        tipsView.backgroundColor = UIColor.lightGray
+        tipsView.isHidden = true
+        return tipsView
+    }()
     override func viewDidLoad(){
         super.viewDidLoad()
-        self.automaticallyAdjustsScrollViewInsets = false
+//        self.automaticallyAdjustsScrollViewInsets = false
         view.backgroundColor = UIColor.white
         self.setupUI()
-        self.requestData()
+        self.tabView.mj_header = MJRefreshNormalHeader.init(refreshingBlock: {
+            self.showTipsView()
+            self.requestData()
+        })
+        self.tabView.mj_footer = MJRefreshAutoFooter.init(refreshingBlock: { 
+            self.requestLoadMoreNews()
+        })
+        self.tabView.mj_header.beginRefreshing()
     }
     func setupUI(){
         view.addSubview(tabView)
+        view.addSubview(tipsView)
     }
     private lazy var tabView:UITableView = {
         let tab = UITableView(frame: CGRect(x:0,y:0,width:SCREENW,height:SCREENH-NavBarHeight-TabBarHeight), style: .plain)
@@ -107,10 +125,37 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
     /*servers*/
     func requestData(){
         let backend:HomeBackend = HomeBackend()
-        print(category)
-        backend.loadCatogoryContent(category: category!) { (topics) in
+//        print(category)
+        backend.loadCatogoryContent(tableView:self.tabView,category: category!) { (nowTime,topics) in
+            self.pullRefreshTime = nowTime
             self.newTopics = topics
             self.tabView.reloadData()
+            self.tabView.mj_header.endRefreshing()
+        }
+    }
+    
+    func requestLoadMoreNews(){
+        let backend:HomeBackend = HomeBackend()
+        backend.loadHomeCategoryMoreNewsFeed(category: category!, lastRefreshTime: self.pullRefreshTime!, tableView: self.tabView) { (moreItems) in
+            self.newTopics += moreItems
+            self.tabView.reloadData()
+        }
+    }
+    func showTipsView(){
+        let backend:HomeBackend = HomeBackend()
+        backend.loadArticleRefreshTip { (newsNum) in
+            self.tipsView.isHidden = false
+            self.tipsView.textLab.text = newsNum==0 ? "暂无更新请休息会" : "今日头条推荐引擎有\(newsNum)条刷新"
+            UIView.animate(withDuration: kAnimationDuration, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue:0), animations: {
+                self.tipsView.textLab.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+                }, completion: { (_) in
+                    self.tipsView.textLab.transform  = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                    let delayTime = DispatchTime.now() + DispatchTimeInterval.seconds(1)
+                    let queue = DispatchQueue.main
+                    queue.asyncAfter(deadline: delayTime, execute: {
+                        self.tipsView.isHidden = true
+                    })
+            })
         }
     }
 }
