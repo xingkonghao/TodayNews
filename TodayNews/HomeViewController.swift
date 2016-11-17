@@ -13,6 +13,7 @@ let topicSmallCellID = "HomeSmallCell"
 let topicMiddleCellID = "HomeMiddleCell"
 let topicLargeCellID = "HomeLargeCell"
 let topicNoImageCellID = "HomeNoImageCell"
+let stockCellID = "StockCell"
 class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDataSource{
 
     private var pullRefreshTime: TimeInterval?
@@ -44,13 +45,16 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
         view.addSubview(tipsView)
     }
     private lazy var tabView:UITableView = {
-        let tab = UITableView(frame: CGRect(x:0,y:0,width:SCREENW,height:SCREENH-NavBarHeight-TabBarHeight), style: .plain)
+       print( self.navigationController?.navigationBar.height ?? "")
+        let tab = UITableView(frame: CGRect(x:0,y:0,width:SCREENW,height:SCREENH-NavBarHeight-TabBarHeight+20), style: .plain)
         tab.delegate = self
         tab.dataSource = self
+        tab.tableFooterView = UIView()
         tab.register(HomeSmallCell.self, forCellReuseIdentifier: topicSmallCellID)
         tab.register(HomeMiddleCell.self, forCellReuseIdentifier: topicMiddleCellID)
         tab.register(HomeLargeCell.self, forCellReuseIdentifier: topicLargeCellID)
         tab.register(HomeNoImageCell.self, forCellReuseIdentifier: topicNoImageCellID)
+        tab.register(UINib.init(nibName: stockCellID, bundle: nil), forCellReuseIdentifier: stockCellID)
         return tab
     }()
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -66,58 +70,70 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let newsTopic = newTopics[indexPath.row]
-        
-        if newsTopic.image_list.count != 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: topicSmallCellID) as! HomeSmallCell
-            cell.newsTopic = newsTopic
-            cell.closeButtonClick(closure: { [weak self] (filterWords) in
+        if newsTopic.cell_type == 0 {
+            if newsTopic.image_list.count != 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: topicSmallCellID) as! HomeSmallCell
+                cell.newsTopic = newsTopic
+                //            cell.closeButtonClick(closure: { [weak self] (filterWords) in
                 // closeButton 相对于 tableView 的坐标
-                let point = self!.view.convert(cell.frame.origin, from: tableView)
-                let convertPoint = CGPoint(x:point.x,y: point.y + cell.closeButton.y)
-//                self!.showPopView(filterWords, point: convertPoint)
-                })
-            return cell
-        } else {
-            if newsTopic.middle_image?.height != nil {
-                if newsTopic.video_detail_info?.video_id != nil || newsTopic.large_image_list.count != 0 {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: topicLargeCellID) as! HomeLargeCell
-                    cell.newsTopic = newsTopic
-                    cell.closeButtonClick(closure: { [weak self] (filterWords) in
+                //                let point = self!.view.convert(cell.frame.origin, from: tableView)
+                //                let convertPoint = CGPoint(x:point.x,y: point.y + cell.closeButton.y)
+                //                self!.showPopView(filterWords, point: convertPoint)
+                //                })
+                return cell
+            } else {
+                if newsTopic.middle_image?.height != nil {
+                    if newsTopic.video_detail_info?.video_id != nil || newsTopic.large_image_list.count != 0 {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: topicLargeCellID) as! HomeLargeCell
+                        cell.newsTopic = newsTopic
+                        //                    cell.closeButtonClick(closure: { [weak self] (filterWords) in
                         // closeButton 相对于 tableView 的坐标
                         
-                        let point = self!.view.convert(cell.frame.origin, to: tableView)
-                        let convertPoint = CGPoint(x:point.x,y: point.y + cell.closeButton.y)
-//                        self!.showPopView(filterWords, point: convertPoint)
-                        })
-                    return cell
-                } else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: topicMiddleCellID) as! HomeMiddleCell
-                    cell.newsTopic = newsTopic
-                    cell.closeButtonClick(closure: { [weak self] (filterWords) in
+                        //                        let point = self!.view.convert(cell.frame.origin, to: tableView)
+                        //                        let convertPoint = CGPoint(x:point.x,y: point.y + cell.closeButton.y)
+                        //                        self!.showPopView(filterWords, point: convertPoint)
+                        //                        })
+                        return cell
+                    } else {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: topicMiddleCellID) as! HomeMiddleCell
+                        cell.newsTopic = newsTopic
+                        //                    cell.closeButtonClick(closure: { [weak self] (filterWords) in
                         // closeButton 相对于 tableView 的坐标
-                        let point = self!.view.convert(cell.frame.origin, from: tableView)
-                        let convertPoint = CGPoint(x:point.x,y: point.y + cell.closeButton.y)
-//                        self!.showPopView(filterWords, point: convertPoint)
-                        })
+                        //                        let point = self!.view.convert(cell.frame.origin, from: tableView)
+                        //                        let convertPoint = CGPoint(x:point.x,y: point.y + cell.closeButton.y)
+                        //                        self!.showPopView(filterWords, point: convertPoint)
+                        //                        })
+                        return cell
+                    }
+                } else {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: topicNoImageCellID) as! HomeNoImageCell
+                    cell.newsTopic = newsTopic
+                    //                cell.closeButtonClick(closure: { [weak self] (filterWords) in
+                    // closeButton 相对于 tableView 的坐标
+                    //                    let point = self!.view.convert(cell.frame.origin, from: tableView)
+                    //                    let convertPoint = CGPoint(x:point.x, y:point.y + cell.closeButton.y)
+                    //                    self!.showPopView(filterWords, point: convertPoint)
+                    //                    })
                     return cell
                 }
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: topicNoImageCellID) as! HomeNoImageCell
-                cell.newsTopic = newsTopic
-                cell.closeButtonClick(closure: { [weak self] (filterWords) in
-                    // closeButton 相对于 tableView 的坐标
-                    let point = self!.view.convert(cell.frame.origin, from: tableView)
-                    let convertPoint = CGPoint(x:point.x, y:point.y + cell.closeButton.y)
-//                    self!.showPopView(filterWords, point: convertPoint)
-                    })
-                return cell
             }
+        }else
+        {
+            let cell = tableView.dequeueReusableCell(withIdentifier: stockCellID, for: indexPath)
+            
+            return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
+    
+    
+    func changeTabViewFrame(){
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

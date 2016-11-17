@@ -11,9 +11,11 @@ import Alamofire
 class NetWorkManager: NSObject {
     //单例
     static let shareNetWorkManager = NetWorkManager()
+   
+    private var commonParams:[String:String] = ["app_name":"news_article","version_code":"5.8.3"]
     ///GET
-    func request_get(url: String,params:[String : AnyObject],finished:@escaping (_ response:DataResponse<Any>)->()) {
-    
+    func request_get( url: String,params:[String : AnyObject],finished:@escaping (_ response:DataResponse<Any>)->()) {
+
         Alamofire.request(url, method: .get, parameters: params).responseJSON { (response) in
             guard response.result.isSuccess else{
                 print(response.result.error ?? "请求失败")

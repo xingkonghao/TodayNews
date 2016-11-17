@@ -24,14 +24,17 @@ class HomeTitleView: UIView {
         super.init(frame: frame)
     self.isUserInteractionEnabled = true
     }
-    override func draw(_ rect: CGRect) {
-
+   
+    override var frame: CGRect{
+        didSet{
+            let newFrame = CGRect(x: 0, y: 0, width: SCREENW, height: 44)
+            super.frame = newFrame
+        }
     }
-    
     
     func setupUI(titles:[HomeTopTitle]){
         buttonHeight = self.frame.size.height
-        buttonWidths = (SCREENW - 40.0*2)/6.5
+        buttonWidths = (SCREENW - 40.0*2)/6.2
         
         self.titles = titles
         addSubview(titleScroll)
@@ -89,11 +92,10 @@ class HomeTitleView: UIView {
             if startIndex == index {
                 button.currentScale = 1.1
             }
-            button.backgroundColor = UIColor.orange
             button.setTitleColor(XKColor(r: 235, g: 235, b: 235, a: 1.0), for: .normal)
             button.setTitleColor(UIColor.white, for: .selected)
             button.titleLabel?.textAlignment = .center
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
             button.addTarget(self, action: #selector(tapTitleBtn(titleButton:)), for: .touchUpInside)
             titleScroll.addSubview(button)
             
@@ -116,7 +118,7 @@ class HomeTitleView: UIView {
         guard currentBtn != lastTitleBtn else {
             return
         }
-        currentBtn.currentScale = 1.1
+        currentBtn.currentScale = 1.2
         lastTitleBtn?.currentScale = 1.0
         lastTitleBtn = currentBtn
         

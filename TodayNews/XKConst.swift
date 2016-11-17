@@ -50,14 +50,17 @@ enum XKOtherLoginButtonType: Int {
 /// iid 未登录用户 id，只要安装了今日头条就会生成一个 iid
 /// 可以在自己的手机上安装一个今日头条，然后通过 charles 抓取一下这个 iid，
 /// 替换成自己的，再进行测试
-let IID = "5034850950"
-let device_id = "6096495334"
-let version_code = "5.7.1"
+let IID = "6115349922"
+let device_id = "17272702071"
+let version_code = "5.8.3"
+let app_name = "news_article"
+let vid = "E218A69A-13F2-485F-9D5A-21493B413642"
+
 /// tabBar 被点击的通知
 let XKTabBarDidSelectedNotification = "YMTabBarDidSelectedNotification"
 
 /// 服务器地址
-let BASE_URL = "http://lf.snssdk.com/"
+let BASE_URL = "https://iu.snssdk.com/"
 
 /// 第一次启动
 let XKFirstLaunch = "firstLaunch"

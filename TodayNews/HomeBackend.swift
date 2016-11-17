@@ -37,7 +37,7 @@ class HomeBackend: NSObject {
         let url = BASE_URL + "article/category/get_subscribed/v1/?"
         let params = ["device_id": device_id ,
                       "aid": 13,
-                      "iid": IID] as [String : Any]
+                      "iid": IID,] as [String : Any]
         var titles:[HomeTopTitle] = NetWorkCache().unarchiveNetData(fileName: url + String(describing: params["aid"]), obj: [HomeTopTitle]() as AnyObject) as! [HomeTopTitle]
         if titles.count > 0 {
             success(titles)
@@ -67,35 +67,35 @@ class HomeBackend: NSObject {
     }
     /*某标题下的具体内容*/
     func loadCatogoryContent(tableView:UITableView,category:String,success:@escaping (_ nowTime:TimeInterval , _ topics:[NewsItem])->()){
-        let url = BASE_URL + "api/news/feed/v39/?"
+        let url = BASE_URL + "api/news/feed/v45/?"
+        let nowTime = NSDate().timeIntervalSince1970
         let params = ["device_id": device_id,
                       "category": category,
-                      "iid": IID]
-        let noewTime = NSDate().timeIntervalSince1970
+                      "iid": IID, "last_refresh_sub_entrance_interval": 0] as [String : Any]
         var topics:[NewsItem] = [NewsItem]()
         var cacheData = NetWorkCache().getFileFromDisk(fileName: url + category)
-        if cacheData != nil {
-            cacheData = cacheData! as Data
-            do {
-                let data:[String:Any] = try JSONSerialization.jsonObject(with: cacheData!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String : Any]
-                if let dics:[AnyObject] = data["data"] as! [AnyObject]? {
-                    for dict in dics {
-                        let content:String = dict["content"] as! String
-                        let contentData: Data = content.data(using: String.Encoding.utf8)! as Data
-                        let dict = try JSONSerialization.jsonObject(with: contentData as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-                        //                        print(dict)
-                        let topic = NewsItem(dict: dict as! [String : AnyObject])
-                        topics.append(topic)
-                    }
-                    
-                }
-                
-                success(noewTime,topics)
-                return
-            }catch{
-                
-            }
-        }
+//        if cacheData != nil {
+//            cacheData = cacheData! as Data
+//            do {
+//                let data:[String:Any] = try JSONSerialization.jsonObject(with: cacheData!, options: JSONSerialization.ReadingOptions.allowFragments) as! [String : Any]
+//                if let dics:[AnyObject] = data["data"] as! [AnyObject]? {
+//                    for dict in dics {
+//                        let content:String = dict["content"] as! String
+//                        let contentData: Data = content.data(using: String.Encoding.utf8)! as Data
+//                        let dict = try JSONSerialization.jsonObject(with: contentData as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+//                                                print(dict)
+//                        let topic = NewsItem(dict: dict as! [String : AnyObject])
+//                        topics.append(topic)
+//                    }
+//                    
+//                }
+//                
+//                success(noewTime,topics)
+//                return
+//            }catch{
+//                
+//            }
+//        }
         
             NetWorkManager.shareNetWorkManager.request_get(url: url, params: params as [String : AnyObject]) { (response) in
                 tableView.mj_header.endRefreshing()
@@ -104,8 +104,15 @@ class HomeBackend: NSObject {
                     return
                 }
                 if let value = response.result.value{
-                    //                                print(value)
+//                    print(value)
                     let json = JSON(value)
+                    let headerEntrance = json["sub_entrance_list"].array
+                    if headerEntrance != nil{
+                        for data in headerEntrance! {
+                            print(data)
+                        }
+                    }
+                  
                     let datas = json["data"].array
                     for data in datas! {
                         let content = data["content"].stringValue
@@ -122,17 +129,18 @@ class HomeBackend: NSObject {
                     
                     NetWorkCache().fileWriteToDisk(data: response.data! , fileName: url + category)
                     
-                    success(noewTime,topics)
+                    success(nowTime,topics)
                 }
             }
         
     }
-        /// 获取首页不同分类的新闻内容
+        /// 获取更多首页不同分类的新闻内容
         func loadHomeCategoryMoreNewsFeed(category: String, lastRefreshTime: TimeInterval, tableView: UITableView, finished:@escaping (_ moreTopics: [NewsItem])->()) {
             let url = BASE_URL + "api/news/feed/v39/?"
-            let params = ["device_id": device_id,
+            let params = [
                           "category": category,
-                          "iid": IID,
+                          "device_id": device_id,
+                           "iid": IID,
                           "last_refresh_sub_entrance_interval": lastRefreshTime] as [String : Any]
             NetWorkManager.shareNetWorkManager.request_get(url: url, params: params as [String : AnyObject]) { (response) in
                 tableView.mj_footer.endRefreshing()
@@ -160,4 +168,7 @@ class HomeBackend: NSObject {
             }
             
         }
+//    func requestStockData( url:String,_: ()->()){
+//        <#function body#>
+//    }
 }

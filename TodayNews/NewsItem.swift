@@ -79,14 +79,16 @@ class NewsItem: NSObject {
     var article_type: Int?
     
     var cursor: Int?
-    
+    var cell_type:Int?
     var media_info: YMMediaInfo?
+    
+    var last_refresh_time:TimeInterval?
     
     init(dict: [String: AnyObject]) {
         super.init()
         
         cursor = dict["cursor"] as? Int
-        
+        cell_type = dict["cell_type"] as? Int
         article_type = dict["article_type"] as? Int
         
         url = dict["url"] as? String
@@ -153,68 +155,76 @@ class NewsItem: NSObject {
         
         let largeImageLists = dict["large_image_list"] as? [AnyObject]
         let imageLists = dict["image_list"] as? [AnyObject]
-        print(title)
-        if imageLists == nil || imageLists?.count == 0 {
-            // 再判断 middle_image 是否为空
-            if middle_image?.height != nil {
-                // 大图、视频图片或广告
-                // 如果 large_image_list 或 video_detail_info 不为空，则显示一张大图 (SCREENW -30)×170，文字在上边
-                // 再判断 video_detail_info 是否为空 video_detail_info?.video_id != nil ||
-                
-                if video_detail_info?.video_id != nil || (largeImageLists != nil && (largeImageLists?.count)! > 0) {
-                    imageW = SCREENW - CGFloat(30)
-                    imageH = 170
+        if cell_type == 25 {
+            cellHeight = dict["cell_height"] as? CGFloat ?? 0
+        }
+        else if cell_type == 3
+        {
+        
+        }else if cell_type == 0
+        {
+            if imageLists == nil || imageLists?.count == 0 {
+                // 再判断 middle_image 是否为空
+                if middle_image?.height != nil {
+                    // 大图、视频图片或广告
+                    // 如果 large_image_list 或 video_detail_info 不为空，则显示一张大图 (SCREENW -30)×170，文字在上边
+                    // 再判断 video_detail_info 是否为空 video_detail_info?.video_id != nil ||
+                    
+                    if video_detail_info?.video_id != nil || (largeImageLists != nil && (largeImageLists?.count)! > 0) {
+                        imageW = SCREENW - CGFloat(30)
+                        imageH = 170
+                        titleW = SCREENW - 30
+                        if title != nil {
+                            titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
+                        }
+                        // 中间有一张大图（包括视频和广告的图片），cell 的高度 = 底部间距 + 标题的高度 + 中间间距 + 图片高度 + 中间间距 + 用户头像的高度 + 底部间距
+                        cellHeight = 2 * kHomeMargin + titleH + imageH + 2 * kMargin + 16
+                        if largeImageLists != nil && (largeImageLists?.count)! > 0 {
+                            for index in largeImageLists! {
+                                let largeImage = YMLargeImageList(dict: index as! [String : AnyObject])
+                                large_image_list.append(largeImage)
+                            }
+                        }
+                    } else {
+                        // 如果 middle_image 不为空，则在 cell 显示一张图片 70 × 108，文字在左边，图片在右边
+                        // 说明是右边图
+                        imageW = 108
+                        // 图片在右边的情况和有三张图片的情况，为了计算简单，图片的高度设置为相等
+                        imageH = 70
+                        // 文字宽度 SCREENW - 108 - 30 - 20
+                        titleW = SCREENW - 158
+                        if title != nil {
+                            titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)                    }
+                        
+                        // 比较标题和图片的高度哪个大，那么 cell 的高度就根据大的计算
+                        // 右边有一张图片，cell 的高度 = 底部间距 + 标题的高度 + 中间的间距 + 用户头像的高度 + 底部间距
+                        cellHeight = (titleH + 16 + kMargin >= imageH) ? (2 * kHomeMargin + titleH + kMargin + 16):(2 * kHomeMargin + imageH)
+                    }
+                } else { // 没有图片,也不是视频
                     titleW = SCREENW - 30
                     if title != nil {
                         titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
                     }
-                    // 中间有一张大图（包括视频和广告的图片），cell 的高度 = 底部间距 + 标题的高度 + 中间间距 + 图片高度 + 中间间距 + 用户头像的高度 + 底部间距
-                    cellHeight = 2 * kHomeMargin + titleH + imageH + 2 * kMargin + 16
-                    if largeImageLists != nil && (largeImageLists?.count)! > 0 {
-                        for index in largeImageLists! {
-                            let largeImage = YMLargeImageList(dict: index as! [String : AnyObject])
-                            large_image_list.append(largeImage)
-                        }
-                    }
-                } else {
-                    // 如果 middle_image 不为空，则在 cell 显示一张图片 70 × 108，文字在左边，图片在右边
-                    // 说明是右边图
-                    imageW = 108
-                    // 图片在右边的情况和有三张图片的情况，为了计算简单，图片的高度设置为相等
-                    imageH = 70
-                    // 文字宽度 SCREENW - 108 - 30 - 20
-                    titleW = SCREENW - 158
-                    if title != nil {
-                    titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)                    }
-
-                    // 比较标题和图片的高度哪个大，那么 cell 的高度就根据大的计算
-                    // 右边有一张图片，cell 的高度 = 底部间距 + 标题的高度 + 中间的间距 + 用户头像的高度 + 底部间距
-                    cellHeight = (titleH + 16 + kMargin >= imageH) ? (2 * kHomeMargin + titleH + kMargin + 16):(2 * kHomeMargin + imageH)
+                    
+                    // 没有图片，cell 的高度 = 底部间距 + 标题的高度 + 中间的间距 + 用户头像的高度 + 底部间距
+                    cellHeight = 2 * kHomeMargin + titleH + kMargin + 16
                 }
-            } else { // 没有图片,也不是视频
+            } else {
+                // 如果 image_list 不为空，则显示 3 张图片 ((SCREENW -30 -12) / 3)×70，文字在上边
+                // 循环遍历 image_list
+                for item in imageLists! {
+                    let imageList = YMImageList(dict: item as! [String: AnyObject])
+                    image_list.append(imageList)
+                }
+                imageW = (SCREENW - CGFloat(42)) / 3
+                imageH = 70
+                // 文字的宽度 SCREENW-30
                 titleW = SCREENW - 30
                 if title != nil {
                     titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
                 }
-              
-                // 没有图片，cell 的高度 = 底部间距 + 标题的高度 + 中间的间距 + 用户头像的高度 + 底部间距
-                cellHeight = 2 * kHomeMargin + titleH + kMargin + 16
+                cellHeight = 2 * kHomeMargin + titleH + imageH + 2 * kMargin + 16
             }
-        } else {
-            // 如果 image_list 不为空，则显示 3 张图片 ((SCREENW -30 -12) / 3)×70，文字在上边
-            // 循环遍历 image_list
-            for item in imageLists! {
-                let imageList = YMImageList(dict: item as! [String: AnyObject])
-                image_list.append(imageList)
-            }
-            imageW = (SCREENW - CGFloat(42)) / 3
-            imageH = 70
-            // 文字的宽度 SCREENW-30
-            titleW = SCREENW - 30
-            if title != nil {
-                titleH = NSString.boundingRectWithString(string: title!, size: CGSize(width:titleW, height:CGFloat(MAXFLOAT)), fontSize: 17)
-            }
-            cellHeight = 2 * kHomeMargin + titleH + imageH + 2 * kMargin + 16
         }
     }
 }
@@ -355,5 +365,22 @@ class YMDetailVideoLargeImage: NSObject {
         width = dict["width"] as? Int
         url = dict["url"] as? String
         url_list = dict["url_list"] as? [[String: AnyObject]] ?? [[:]]
+    }
+}
+class stockData: NSObject {
+
+}
+class stockType: NSObject {
+    var name:String?
+    var price:CGFloat?
+    
+}
+class HeaderEntrance: NSObject{
+    var open_url:String?
+    var name:String?
+    init(dict: [String:AnyObject]) {
+        super.init()
+        open_url = dict["open_url"] as? String
+        name = dict["name"] as? String
     }
 }

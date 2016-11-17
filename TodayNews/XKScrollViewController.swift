@@ -19,6 +19,8 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.automaticallyAdjustsScrollViewInsets = false
+        navigationController?.navigationBar.barTintColor = XKColor(r: 210, g: 63, b: 66, a: 1.0)
+
         pageHeight = SCREENH - (NavBarHeight + TabBarHeight)
         self.setupUI()
         self.requestTitles()
@@ -33,7 +35,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        pageCollection.contentOffset = CGPoint(x: 0, y: 0)
+//        pageCollection.contentOffset = CGPoint(x: 0, y: 0)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -43,7 +45,6 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     private lazy var titleScroll:HomeTitleView = {
 
         let titleScroll = HomeTitleView(frame:CGRect(x: 0, y: 0, width: SCREENW, height: self.titleH))
-        titleScroll.backgroundColor = UIColor.green
         titleScroll.startIndex = self.startIndex
         titleScroll.didSelectTitleClosure(closure: { (TitleButton) in
             
@@ -57,6 +58,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
         pageCollection.delegate = self
         pageCollection.dataSource = self
         pageCollection.isPagingEnabled = true
+        pageCollection.backgroundColor = UIColor.green
         pageCollection .register(XKPageCell.self, forCellWithReuseIdentifier:"PageCell")
         
         return pageCollection
@@ -65,6 +67,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = 0
         return flowLayout
     }()
 
@@ -86,8 +89,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell:XKPageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PageCell", for: indexPath) as! XKPageCell
         cell.setupUI(text: "\(indexPath.item)")
-        cell.backgroundColor = UIColor.red
-      
+      cell.backgroundColor = UIColor.red
         return cell
     }
     //点击
@@ -103,7 +105,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
             let childVC = childViewControllers[indexPath.item]
             let r = arc4random()%255,g = arc4random()%255,b=arc4random()%255
             childVC.view.backgroundColor = XKColor(r: CGFloat(r), g: CGFloat(g), b: CGFloat(b),a: 1)
-            childVC.view.frame = self.view.bounds
+//            childVC.view.frame = self.view.bounds
             cell.addSubview(childVC.view)
         }
     }
@@ -125,13 +127,13 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
         }
     }
     func requestTitles(){
-        self.titles = NetWorkCache().unarchiveNetData(fileName: "topTitles.archive", obj: self.titles as AnyObject) as! [HomeTopTitle]
-        if titles.count != 0 {
-            self.addChildrenControllers(topTitles: (self.titles))
-            self.titleScroll.setupUI(titles: self.titles)
-            self.pageCollection.reloadData()
-            return
-        }
+//        self.titles = NetWorkCache().unarchiveNetData(fileName: "topTitles.archive", obj: self.titles as AnyObject) as! [HomeTopTitle]
+//        if titles.count != 0 {
+//            self.addChildrenControllers(topTitles: (self.titles))
+//            self.titleScroll.setupUI(titles: self.titles)
+//            self.pageCollection.reloadData()
+//            return
+//        }
         let homeBackend:HomeBackend = HomeBackend()
         homeBackend.loadHomeTitlesData { [weak self] (topTitles) in
             let dict = ["category":"__all__","name":"推荐"]
@@ -141,7 +143,7 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
             self?.addChildrenControllers(topTitles: (self?.titles)!)
             self?.titleScroll.setupUI(titles: self!.titles)
             self?.pageCollection.reloadData()
-            NetWorkCache().archiveNetData(filelName: "topTitles.archive", obj: topTitles)
+//            NetWorkCache().archiveNetData(filelName: "topTitles.archive", obj: topTitles)
         }
     }
     func addChildrenControllers(topTitles: [HomeTopTitle]){
@@ -151,4 +153,6 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
             self.addChildViewController(childVC)
         }
     }
+    
+    
 }
