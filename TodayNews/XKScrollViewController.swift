@@ -14,8 +14,8 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     public var titleLabW:CGFloat = SCREENW/5.0
     public var titleH:CGFloat = 40
     private var pageHeight:CGFloat = 0.0
+    var timeInterval:TimeInterval = NSDate().timeIntervalSince1970
     var startIndex:NSInteger = 0//起始的页面
-
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.automaticallyAdjustsScrollViewInsets = false
@@ -102,10 +102,11 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         if self.titles.count>indexPath.item  {
-            let childVC = childViewControllers[indexPath.item]
+            let childVC:HomeViewController = childViewControllers[indexPath.item] as! HomeViewController
             let r = arc4random()%255,g = arc4random()%255,b=arc4random()%255
             childVC.view.backgroundColor = XKColor(r: CGFloat(r), g: CGFloat(g), b: CGFloat(b),a: 1)
-//            childVC.view.frame = self.view.bounds
+            childVC.pullRefreshTime  = timeInterval
+            //            childVC.view.frame = self.view.bounds
             cell.addSubview(childVC.view)
         }
     }

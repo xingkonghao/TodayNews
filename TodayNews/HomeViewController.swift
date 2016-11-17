@@ -14,10 +14,15 @@ let topicMiddleCellID = "HomeMiddleCell"
 let topicLargeCellID = "HomeLargeCell"
 let topicNoImageCellID = "HomeNoImageCell"
 let stockCellID = "StockCell"
+
+protocol HomeViewControllerDelegate {
+    func refreshTime()->TimeInterval
+}
+
 class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDataSource{
 
-    private var pullRefreshTime: TimeInterval?
-
+    var delegate:HomeViewControllerDelegate?
+    var pullRefreshTime: TimeInterval?
     var category:String?
     var newTopics:[NewsItem] = [NewsItem]()
     private lazy var tipsView:TipsView = {
@@ -142,7 +147,8 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
     func requestData(){
         let backend:HomeBackend = HomeBackend()
 //        print(category)
-        backend.loadCatogoryContent(tableView:self.tabView,category: category!) { (nowTime,topics) in
+        let timeInterVal:TimeInterval = category! == "__all__" ? Date().timeIntervalSince1970 : Date().timeIntervalSince1970 - pullRefreshTime!
+        backend.loadCatogoryContent(tableView:self.tabView,category: category! ,lastTimeInterval: timeInterVal) { (nowTime,topics) in
             self.pullRefreshTime = nowTime
             self.newTopics = topics
             self.tabView.reloadData()
@@ -152,7 +158,10 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
     
     func requestLoadMoreNews(){
         let backend:HomeBackend = HomeBackend()
-        backend.loadHomeCategoryMoreNewsFeed(category: category!, lastRefreshTime: self.pullRefreshTime!, tableView: self.tabView) { (moreItems) in
+        let timeInterVal:TimeInterval = category! == "__all__" ? Date().timeIntervalSince1970 : Date().timeIntervalSince1970 - pullRefreshTime!
+
+        backend.loadHomeCategoryMoreNewsFeed(category: category!, lastRefreshTime: timeInterVal, tableView: self.tabView) { (nowTime,moreItems) in
+            self.pullRefreshTime = nowTime
             self.newTopics += moreItems
             self.tabView.reloadData()
         }

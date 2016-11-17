@@ -66,12 +66,12 @@ class HomeBackend: NSObject {
         }
     }
     /*某标题下的具体内容*/
-    func loadCatogoryContent(tableView:UITableView,category:String,success:@escaping (_ nowTime:TimeInterval , _ topics:[NewsItem])->()){
+    func loadCatogoryContent(tableView:UITableView,category:String, lastTimeInterval:TimeInterval,success:@escaping (_ nowTime:TimeInterval , _ topics:[NewsItem])->()){
         let url = BASE_URL + "api/news/feed/v45/?"
-        let nowTime = NSDate().timeIntervalSince1970
+      
         let params = ["device_id": device_id,
                       "category": category,
-                      "iid": IID, "last_refresh_sub_entrance_interval": 0] as [String : Any]
+                      "iid": IID, "last_refresh_sub_entrance_interval": 20000] as [String : Any]
         var topics:[NewsItem] = [NewsItem]()
         var cacheData = NetWorkCache().getFileFromDisk(fileName: url + category)
 //        if cacheData != nil {
@@ -103,6 +103,8 @@ class HomeBackend: NSObject {
                     SVProgressHUD.showError(withStatus: "加载失败!")
                     return
                 }
+                let nowTime =  NSDate().timeIntervalSince1970
+
                 if let value = response.result.value{
 //                    print(value)
                     let json = JSON(value)
@@ -135,7 +137,7 @@ class HomeBackend: NSObject {
         
     }
         /// 获取更多首页不同分类的新闻内容
-        func loadHomeCategoryMoreNewsFeed(category: String, lastRefreshTime: TimeInterval, tableView: UITableView, finished:@escaping (_ moreTopics: [NewsItem])->()) {
+        func loadHomeCategoryMoreNewsFeed(category: String, lastRefreshTime: TimeInterval, tableView: UITableView, finished:@escaping (_ nowTime:TimeInterval , _ moreTopics: [NewsItem])->()) {
             let url = BASE_URL + "api/news/feed/v39/?"
             let params = [
                           "category": category,
@@ -149,6 +151,8 @@ class HomeBackend: NSObject {
                     return
                 }
                 if let value = response.result.value {
+                    let nowTime =  NSDate().timeIntervalSince1970
+
                     let json = JSON(value)
                     let datas = json["data"].array
                     var topics = [NewsItem]()
@@ -163,7 +167,7 @@ class HomeBackend: NSObject {
                             SVProgressHUD.showError(withStatus: "获取数据失败!")
                         }
                     }
-                    finished(topics)
+                    finished(nowTime,topics)
                 }
             }
             

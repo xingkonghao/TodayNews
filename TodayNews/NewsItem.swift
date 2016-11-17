@@ -81,9 +81,7 @@ class NewsItem: NSObject {
     var cursor: Int?
     var cell_type:Int?
     var media_info: YMMediaInfo?
-    
-    var last_refresh_time:TimeInterval?
-    
+        
     init(dict: [String: AnyObject]) {
         super.init()
         
