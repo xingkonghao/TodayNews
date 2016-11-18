@@ -106,14 +106,16 @@ class HomeBackend: NSObject {
                 let nowTime =  NSDate().timeIntervalSince1970
 
                 if let value = response.result.value{
-//                    print(value)
                     let json = JSON(value)
                     let headerEntrance = json["sub_entrance_list"].array
+                    var headerTags:[HeaderEntrance]?
                     if headerEntrance != nil{
                         for data in headerEntrance! {
                             print(data)
+                            let tag:HeaderEntrance = HeaderEntrance(dict: data.dictionaryObject as! [String : AnyObject])
+                           headerTags?.append(tag)
                         }
-                    }
+                    }             
                   
                     let datas = json["data"].array
                     for data in datas! {
@@ -123,6 +125,9 @@ class HomeBackend: NSObject {
                             let dict = try JSONSerialization.jsonObject(with: contentData as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
                             //                        print(dict)
                             let topic = NewsItem(dict: dict as! [String : AnyObject])
+                            if headerTags != nil{
+                                topic.headerTag = headerTags
+                            }
                             topics.append(topic)
                         } catch {
                             SVProgressHUD.showError(withStatus: "获取数据失败!")

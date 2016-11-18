@@ -11,7 +11,8 @@ import UIKit
 class NewsItem: NSObject {
  
 
-
+//顶部按钮集合
+    var  headerTag:[HeaderEntrance]?
     
     // 文字的高度
     var titleH: CGFloat = 0

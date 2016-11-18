@@ -21,6 +21,8 @@ class StockCell: UITableViewCell {
     @IBOutlet weak var changeLab3: UILabel!
     @IBOutlet weak var timeLab: UILabel!
     @IBOutlet weak var remiderLab: UILabel!
+    @IBOutlet weak var tagView: TagView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -28,10 +30,11 @@ class StockCell: UITableViewCell {
 
     var newTopic:NewsItem? {
         didSet{
-            
+            tagView.headerTags = newTopic?.headerTag
         }
     }
     
+  
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

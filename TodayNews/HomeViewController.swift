@@ -16,13 +16,13 @@ let topicNoImageCellID = "HomeNoImageCell"
 let stockCellID = "StockCell"
 
 protocol HomeViewControllerDelegate {
-    func refreshTime()->TimeInterval
+    func refreshTime(interval:String)
 }
 
 class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDataSource{
 
     var delegate:HomeViewControllerDelegate?
-    var pullRefreshTime: TimeInterval?
+    var pullRefreshTime: String?
     var category:String?
     var newTopics:[NewsItem] = [NewsItem]()
     private lazy var tipsView:TipsView = {
@@ -124,8 +124,10 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
             }
         }else
         {
-            let cell = tableView.dequeueReusableCell(withIdentifier: stockCellID, for: indexPath)
-            
+            let cell:StockCell = tableView.dequeueReusableCell(withIdentifier: stockCellID, for: indexPath) as! StockCell
+          
+            cell.newTopic = newsTopic
+
             return cell
         }
     }
@@ -147,23 +149,29 @@ class HomeViewController: BaseViewController ,UITableViewDelegate,UITableViewDat
     func requestData(){
         let backend:HomeBackend = HomeBackend()
 //        print(category)
-        let timeInterVal:TimeInterval = category! == "__all__" ? Date().timeIntervalSince1970 : Date().timeIntervalSince1970 - pullRefreshTime!
+        let lastRefreshTime:TimeInterval = TimeInterval(pullRefreshTime!)!
+        let timeInterVal:TimeInterval = category! == "__all__" ? Date().timeIntervalSince1970 : Date().timeIntervalSince1970 - lastRefreshTime
         backend.loadCatogoryContent(tableView:self.tabView,category: category! ,lastTimeInterval: timeInterVal) { (nowTime,topics) in
-            self.pullRefreshTime = nowTime
+            self.pullRefreshTime = "\(nowTime)"
             self.newTopics = topics
             self.tabView.reloadData()
             self.tabView.mj_header.endRefreshing()
+            self.delegate?.refreshTime(interval: self.pullRefreshTime!)
+
         }
     }
     
     func requestLoadMoreNews(){
         let backend:HomeBackend = HomeBackend()
-        let timeInterVal:TimeInterval = category! == "__all__" ? Date().timeIntervalSince1970 : Date().timeIntervalSince1970 - pullRefreshTime!
+        let lastRefreshTime:TimeInterval = TimeInterval(pullRefreshTime!)!
+
+        let timeInterVal:TimeInterval = category! == "__all__" ? Date().timeIntervalSince1970 : Date().timeIntervalSince1970 - lastRefreshTime
 
         backend.loadHomeCategoryMoreNewsFeed(category: category!, lastRefreshTime: timeInterVal, tableView: self.tabView) { (nowTime,moreItems) in
-            self.pullRefreshTime = nowTime
+            self.pullRefreshTime = "\(nowTime)"
             self.newTopics += moreItems
             self.tabView.reloadData()
+            self.delegate?.refreshTime(interval: self.pullRefreshTime!)
         }
     }
     func showTipsView(){

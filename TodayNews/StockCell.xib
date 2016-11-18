@@ -208,6 +208,7 @@
                 <outlet property="price2" destination="WkK-W4-0Uy" id="197-7E-4OO"/>
                 <outlet property="price3" destination="VHA-Mi-gQd" id="naQ-cq-MWm"/>
                 <outlet property="remiderLab" destination="giD-ix-pOW" id="7bJ-lM-Psk"/>
+                <outlet property="tagView" destination="r0H-nu-Nkj" id="sC0-70-s8n"/>
                 <outlet property="timeLab" destination="aMl-UD-aNP" id="Ngi-WK-mFv"/>
             </connections>
             <point key="canvasLocation" x="92.5" y="143.5"/>

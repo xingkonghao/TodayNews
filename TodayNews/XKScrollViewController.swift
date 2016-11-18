@@ -8,13 +8,13 @@
 
 import UIKit
 import Dispatch
-class XKScrollViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+class XKScrollViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout,HomeViewControllerDelegate{
 
     public var titles = [HomeTopTitle]()
     public var titleLabW:CGFloat = SCREENW/5.0
     public var titleH:CGFloat = 40
     private var pageHeight:CGFloat = 0.0
-    var timeInterval:TimeInterval = NSDate().timeIntervalSince1970
+    var timeInterval:String = "\(NSDate().timeIntervalSince1970)"
     var startIndex:NSInteger = 0//起始的页面
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,7 +105,8 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
             let childVC:HomeViewController = childViewControllers[indexPath.item] as! HomeViewController
             let r = arc4random()%255,g = arc4random()%255,b=arc4random()%255
             childVC.view.backgroundColor = XKColor(r: CGFloat(r), g: CGFloat(g), b: CGFloat(b),a: 1)
-            childVC.pullRefreshTime  = timeInterval
+            childVC.pullRefreshTime = timeInterval.copy() as? String
+            childVC.delegate = self
             //            childVC.view.frame = self.view.bounds
             cell.addSubview(childVC.view)
         }
@@ -155,5 +156,8 @@ class XKScrollViewController: UIViewController, UICollectionViewDelegate,UIColle
         }
     }
     
+    func refreshTime(interval: String) {
+        self.timeInterval = interval
+    }
     
 }
